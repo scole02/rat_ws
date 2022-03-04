@@ -7,6 +7,8 @@
 #define RAT_HW_INTERFACE_H
 
 #include <ros_control_boilerplate/generic_hw_interface.h>
+#include <rat_control/armCmd.h>
+#include <rat_control/ratTelemetry.h>
 
 namespace rat_ns
 {
@@ -33,6 +35,9 @@ public:
   virtual void enforceLimits(ros::Duration& period);
 
 protected:
+  ros::Subscriber telemetry_sub;
+  void telemetryCallback(const rat_control::ratTelemetry::ConstPtr &msg);
+  ros::Publisher cmd_pub;
 
 };  // class
 

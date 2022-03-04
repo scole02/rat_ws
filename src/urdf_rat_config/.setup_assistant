@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: rat_urdfV1
+    relative_path: urdf/rat_urdfV1.urdf
+    xacro_args: ""
+  SRDF:
+    relative_path: config/rat_urdfV1.srdf
+  CONFIG:
+    author_name: samco
+    author_email: scole02@calpoly.edu
+    generated_timestamp: 1643229026

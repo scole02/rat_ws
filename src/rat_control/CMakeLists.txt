@@ -45,6 +45,7 @@ find_package(catkin REQUIRED COMPONENTS message_generation cmake_modules hardwar
 ## Generate messages in the 'msg' folder
 add_message_files(FILES
   armCmd.msg
+  ratTelemetry.msg
 )
 
 ## Generate services in the 'srv' folder
