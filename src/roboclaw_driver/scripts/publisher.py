@@ -4,7 +4,7 @@ import rospy
 from roboclaw_driver.msg import armCmd
 
 def talker():
-    pub = rospy.Publisher('motors', armCmd, queue_size=10)
+    cmd_pub = rospy.Publisher('roboclaw_cmd', armCmd, queue_size=10)
     rospy.init_node('talker', anonymous=True)
     rate = rospy.Rate(10) # 10hz
     
@@ -15,12 +15,12 @@ def talker():
             continue
         
         msg = armCmd()
-        msg.position_rads = [rads, 0.0, 0.0, 0.0]
+        msg.position_rads = [rads, rads, 0.0, 0.0]
         msg.speed = [0, 0, 0, 0]
         msg.accel_deccel = [0, 0, 0, 0]
         
         rospy.loginfo(msg)
-        pub.publish(msg)
+        cmd_pub.publish(msg)
         rate.sleep()
 
 if __name__ == '__main__':
