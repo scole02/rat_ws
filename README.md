@@ -4,6 +4,6 @@ Installing ROS Noetic on Ubuntu20.04/Debian10 X86 is quite easy, and can be done
 
 For 32 Bit RPI all packages must be built on machine :/
 
-Links:
-  [https://projects-raspberry.com/lidar-integration-with-ros-noetic-on-raspberry-pi-os/](Noetic Desktop Install)
-  [http://wiki.ros.org/rosinstall_generator](Adding a Package to a workspace) section 4.5 is helpful
+Links:  
+  [Noetic Desktop Install](https://projects-raspberry.com/lidar-integration-with-ros-noetic-on-raspberry-pi-os/)  
+  [Adding a Package to a workspace](http://wiki.ros.org/rosinstall_generator) (section 4.5 is helpful)
