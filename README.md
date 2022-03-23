@@ -26,7 +26,7 @@ Packages to be added that are not included in desktop install:
  `$ rosinstall_generator PKG_NAME --rosdistro noetic --deps | vcs import src` 
    
 2. Build/Install said package  
-  `sudo src/catkin/bin/catkin_make_isolated --only-pkg-with-deps ros_control_boilerplate --install -DCMAKE_BUILD_TYPE=Release --install-space /opt/ros/noetic -DPYTHON_EXECUTABLE=/usr/bin/python3`
+  `sudo src/catkin/bin/catkin_make_isolated --only-pkg-with-deps PKG_NAME --install -DCMAKE_BUILD_TYPE=Release --install-space /opt/ros/noetic -DPYTHON_EXECUTABLE=/usr/bin/python3`
 
 ### Quirks
 - When building `ros_control_boilerplate` there may be an error finding the `gflags` library, in my case it was not installed on Ubuntu 20.04 or RPi OS Buster. Use: `sudo apt install libgflags-dev`
