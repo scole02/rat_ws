@@ -15,7 +15,7 @@ def talker():
             continue
         
         msg = armCmd()
-        msg.position_rads = [rads, rads, 0.0, 0.0]
+        msg.position_rads = [rads, rads, rads, rads]
         msg.speed = [0, 0, 0, 0]
         msg.accel_deccel = [0, 0, 0, 0]
         
