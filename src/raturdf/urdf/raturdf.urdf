@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="raturdf">
+  <link
+    name="Base">
+    <inertial>
+      <origin
+        xyz="-0.00039417 0.00061669 0.037534"
+        rpy="0 0 0" />
+      <mass
+        value="0.060547" />
+      <inertia
+        ixx="8.0889E-05"
+        ixy="2.3251E-06"
+        ixz="3.1219E-06"
+        iyy="6.6926E-05"
+        iyz="-1.1884E-06"
+        izz="4.8658E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://raturdf/meshes/Base.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://raturdf/meshes/Base.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="Link1">
+    <inertial>
+      <origin
+        xyz="0.12957 0.0024799 -1.2195E-07"
+        rpy="0 0 0" />
+      <mass
+        value="0.09151" />
+      <inertia
+        ixx="2.2716E-05"
+        ixy="2.9529E-06"
+        ixz="-5.4729E-10"
+        iyy="7.785E-05"
+        iyz="5.7773E-10"
+        izz="8.6518E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://raturdf/meshes/Link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://raturdf/meshes/Link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Base Joint"
+    type="fixed">
+    <origin
+      xyz="0 -0.0071 0.0799999999999999"
+      rpy="3.14159265358979 0 3.14159265358979" />
+    <parent
+      link="Base" />
+    <child
+      link="Link1" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Link2">
+    <inertial>
+      <origin
+        xyz="0.16142 0.0018486 2.6762E-07"
+        rpy="0 0 0" />
+      <mass
+        value="0.10764" />
+      <inertia
+        ixx="2.5367E-05"
+        ixy="3.2819E-06"
+        ixz="-3.4674E-10"
+        iyy="0.00017935"
+        iyz="8.4401E-10"
+        izz="0.00018711" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://raturdf/meshes/Link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://raturdf/meshes/Link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Elbow Joint"
+    type="fixed">
+    <origin
+      xyz="0.2 -0.042735 0"
+      rpy="3.14159265358979 0 3.14159265358979" />
+    <parent
+      link="Link1" />
+    <child
+      link="Link2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Link3">
+    <inertial>
+      <origin
+        xyz="0.047177 0.0018868 0.00014565"
+        rpy="0 0 0" />
+      <mass
+        value="0.053164" />
+      <inertia
+        ixx="1.1228E-05"
+        ixy="1.1536E-06"
+        ixz="-7.4921E-08"
+        iyy="2.977E-05"
+        iyz="4.1231E-08"
+        izz="2.7881E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://raturdf/meshes/Link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://raturdf/meshes/Link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Wrist"
+    type="fixed">
+    <origin
+      xyz="0.265 -0.0444850000000003 0"
+      rpy="0 1.5707963267949 0" />
+    <parent
+      link="Link2" />
+    <child
+      link="Link3" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Claw">
+    <inertial>
+      <origin
+        xyz="0.0342548832532501 -1.52322437568797E-05 -7.87950812031202E-06"
+        rpy="0 0 0" />
+      <mass
+        value="0.0633407039983011" />
+      <inertia
+        ixx="1.34662239979644E-05"
+        ixy="3.16536824898843E-13"
+        ixz="-5.36062667728837E-09"
+        iyy="1.41052434414774E-05"
+        iyz="-7.16587042470987E-09"
+        izz="1.28526359054097E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://raturdf/meshes/Claw.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://raturdf/meshes/Claw.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RollMotor"
+    type="fixed">
+    <origin
+      xyz="0.119000000000001 0 0"
+      rpy="-0.0327592341143941 0 0" />
+    <parent
+      link="Link3" />
+    <child
+      link="Claw" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>
