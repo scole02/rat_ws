@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import rospy
 import time
+from math import isclose
 from roboclaw_python.roboclaw_3 import Roboclaw
 from math import pi
 from roboclaw_driver.msg import armCmd, ratTelemetry
@@ -19,7 +20,22 @@ class RoboclawNode:
     joint_cnts_per_rev = parser['JOINTS']['cnts_per_rev'].split(", ")
     
     BAUDRATE = 115200
-    
+    FLOAT_EPSILON = 0.0001 # motor angle tolerance
+
+    def rads_to_enc_cnts(self, cnts_per_rev, rads):
+        """
+        Takes angle in radians and the enocder counts per revolution 
+        and converts radians into encoder counts for that motor.
+        NOTE: encoder cnts   <-> angle 
+              cnts_per_rev   <-> 0 rads
+              0              <-> -2pi rads
+              2*cnts_per_rev <-> 2pi rads 
+        args:
+            cnts_per_rev(uint): encoder counts equivalent to 0 radians for particular motor
+            rads(float): desired angle 
+        """
+        return int(cnts_per_rev + (rads * (cnts_per_rev/(2*pi))))
+
     def __init__(self):
         
         self.rc = Roboclaw(self.joint_comports[0], self.BAUDRATE) # comports are not gonna change for us
@@ -30,6 +46,7 @@ class RoboclawNode:
         rospy.loginfo(rospy.get_caller_id() + "I heard %s", data)
         # init message to publish for hardware interface telem_callback
         telem_msg = ratTelemetry()
+        
 
         for i in range(self.num_joints):
             # fetch data from config file
@@ -62,36 +79,41 @@ class RoboclawNode:
 
             if channel == 1:
                 # get current encoder val
-                print(f'cur_address: {address}')
                 cur_enc_val = self.rc.ReadEncM1(address)[1] # ReadEnc returns (success_code, enc_val, address)
-                print(cur_enc_val)
-                cur_angle = (cur_enc_val/cnts_per_rev) * 2 * pi
-                print(cur_angle)
+                cur_angle = ((cur_enc_val-cnts_per_rev)/cnts_per_rev) * 2 * pi
+                rospy.loginfo(f'Motor {i} {cur_enc_val}')
                 # populate telemetry message
                 telem_msg.angle[i] = cur_angle
+                # if isclose(cur_angle, rads, rel_tol=self.FLOAT_EPSILON):
+                #     continue # done write an unneccesary value to motor
                 # calculate encoder counts to write to motor
-                cnts1 = int((rads*cnts_per_rev) / (2*pi))
-                rospy.loginfo(f'addr: {address}, cnts1: {cnts1}')
+                cnts1 = self.rads_to_enc_cnts(cnts_per_rev, rads)
+                if cnts1 == cur_enc_val:
+                    continue # dont need to write val if motor is already there
                 self.rc.SpeedAccelDeccelPositionM1(address,accel1,speed1,deccel1,cnts1,buf)
+                rospy.loginfo(f'Writing {cnts1}')
             elif channel == 2:
                 # get current encoder val
                 cur_enc_val = self.rc.ReadEncM2(address)[1]
-                cur_angle = (cur_enc_val/cnts_per_rev) * 2 * pi
+                cur_angle = ((cur_enc_val-cnts_per_rev)/cnts_per_rev) * 2 * pi
+                rospy.loginfo(f'Motor {i} {cur_enc_val}')
                 # populate telemetry message
                 telem_msg.angle[i] = cur_angle
+
                 # calculate encoder counts to write to motor
-                cnts2 = int((rads*cnts_per_rev) / (2*pi))
-                rospy.loginfo(f'cnts2: {cnts2}')
+                cnts2 = self.rads_to_enc_cnts(cnts_per_rev, rads)
+                if cnts2 == cur_enc_val:
+                    continue # dont need to write val if motor is already there
+                rospy.loginfo(f'Writing {cnts2}')
                 self.rc.SpeedAccelDeccelPositionM2(address,accel2,speed2,deccel2,cnts2,buf)
             else:
                 rospy.loginfo(rospy.get_caller_id() + "Invalid motor channel: " + channel)
                 return  
             time.sleep(0.5)
             
-        rospy.loginfo(f'telem_msg: {telem_msg}')
+        #rospy.loginfo(f'telem_msg: {telem_msg}')
 
         self.telem_pub.publish(telem_msg)
-        
         #self.rc.SpeedAccelDeccelPositionM1M2(address,accel1,speed1,deccel1,cnts1,
             #                                         accel2,speed2,deccel2,cnts2,buf)
         # read encoder values
@@ -115,7 +137,7 @@ class RoboclawNode:
         # run simultaneously.
         self.telem_pub = rospy.Publisher('roboclaw_telemetry', ratTelemetry, queue_size=5)
         rospy.init_node('roboclaw_node', anonymous=True)
-        rospy.Subscriber('roboclaw_cmd', armCmd, self.callback)
+        rospy.Subscriber('roboclaw_cmd', armCmd, self.callback, queue_size=5, buff_size=128)
         print(f'Num Joints: {self.num_joints}\n Joint Config:\n  Addresses: {self.joint_addresses}\n  Channels: {self.joint_channels}\n  Comports: {self.joint_comports}\n  Counts per Revolution: {self.joint_cnts_per_rev}')
         rospy.loginfo('Listening...\n')
 

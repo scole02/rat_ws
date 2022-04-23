@@ -2,7 +2,7 @@
 # Settings for ros_control control loop
 
 generic_hw_control_loop:
-  loop_hz: 5 
+  loop_hz: 1 
   cycle_time_error_threshold: 0.1
 
 # Settings for ros_control hardware interface (used in generic_hw_interface.cpp)
